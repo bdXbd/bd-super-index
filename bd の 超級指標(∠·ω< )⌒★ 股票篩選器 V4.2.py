@@ -794,7 +794,7 @@ def scan_signals(df, recent_k=2, strict_confirm=False, show_swing_ob=False):
         if is_red_area:
             mb_fired_in_cycle = False
 
-        size_piv = 3
+        size_piv = 2
         if i >= size_piv * 2:
             wt_slice = wt1.iloc[i - size_piv * 2 : i + 1].values
             left_max = np.max(wt_slice[:size_piv])
