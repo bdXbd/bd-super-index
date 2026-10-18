@@ -794,7 +794,7 @@ def scan_signals(df, recent_k=2, strict_confirm=False, show_swing_ob=False):
         if is_red_area:
             mb_fired_in_cycle = False
 
-        size_piv = 5
+        size_piv = 3
         if i >= size_piv * 2:
             wt_slice = wt1.iloc[i - size_piv * 2 : i + 1].values
             left_max = np.max(wt_slice[:size_piv])
@@ -805,7 +805,9 @@ def scan_signals(df, recent_k=2, strict_confirm=False, show_swing_ob=False):
                 curr_wt_ph_price = high_v[i - size_piv]
                 if last_wt_ph_idx != -1:
                     bars_since = (i - size_piv) - last_wt_ph_idx
-                    if 5 <= bars_since <= 60 and curr_wt_ph_price > last_wt_ph_price and curr_wt_ph_val < last_wt_ph_val:
+                    # 3K 樞軸 + 強勢超買區過濾 (前峰 >= 53.0 且今峰 > 0.0)
+                    zone_ok = (last_wt_ph_val >= 53.0) and (curr_wt_ph_val > 0.0)
+                    if 3 <= bars_since <= 60 and curr_wt_ph_price > last_wt_ph_price and curr_wt_ph_val < last_wt_ph_val and zone_ok:
                         sl_p = c_val + cur_atr * 1.5
                         other_events.append({
                             'bar_i': i,
